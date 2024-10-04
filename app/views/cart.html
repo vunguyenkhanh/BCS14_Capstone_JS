@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cart | Shoes Store</title>
+    <link
+      rel="shortcut icon"
+      href="../../assets/img/running-shoe.png"
+      type="image/x-icon" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Flowbite CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"
+      rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <script src="../../assets/css/main.css"></script>
+  </head>
+  <body>
+    <header class="sticky z-20 top-0 start-0 border-b border-transparent">
+      <nav class="antialiased">
+        <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-8">
+              <div class="shrink-0">
+                <a
+                  href="./"
+                  class="flex items-center space-x-3 rtl:space-x-reverse">
+                  <img
+                    src="../../assets/img/running-shoe.png"
+                    class="h-8 fill-blue-700"
+                    alt="Logo" />
+                  <span
+                    class="self-center text-2xl font-semibold whitespace-nowrap">
+                    ShoesStore
+                  </span>
+                </a>
+              </div>
+
+              <ul
+                class="hidden lg:flex items-center justify-start gap-6 md:gap-8 py-3 sm:justify-center">
+                <li>
+                  <a
+                    href="./"
+                    title=""
+                    class="flex text-sm font-medium text-gray-900 hover:text-primary-700">
+                    Home
+                  </a>
+                </li>
+                <li class="shrink-0">
+                  <a
+                    href="#"
+                    title=""
+                    class="flex text-sm font-medium text-gray-900 hover:text-primary-700">
+                    Men
+                  </a>
+                </li>
+                <li class="shrink-0">
+                  <a
+                    href="#"
+                    title=""
+                    class="flex text-sm font-medium text-gray-900 hover:text-primary-700">
+                    Women
+                  </a>
+                </li>
+                <li class="shrink-0">
+                  <a
+                    href="#"
+                    title=""
+                    class="text-sm font-medium text-gray-900 hover:text-primary-700">
+                    Kids
+                  </a>
+                </li>
+                <li class="shrink-0">
+                  <a
+                    href="#"
+                    title=""
+                    class="text-sm font-medium text-gray-900 hover:text-primary-700">
+                    Sports
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="flex items-center lg:space-x-2">
+              <button
+                id="myCartDropdownButton1"
+                data-dropdown-toggle="myCartDropdown1"
+                type="button"
+                class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 text-sm font-medium leading-none text-gray-900">
+                <span class="sr-only">Cart</span>
+                <svg
+                  class="w-5 h-5 lg:me-1"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24">
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
+                </svg>
+                <span class="hidden sm:flex">My Cart</span>
+                <svg
+                  class="hidden sm:flex w-4 h-4 text-gray-900 ms-1"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24">
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m19 9-7 7-7-7" />
+                </svg>
+              </button>
+
+              <div
+                id="myCartDropdown1"
+                class="hidden z-10 mx-auto max-w-sm space-y-4 overflow-hidden rounded-lg bg-white p-4 antialiased shadow-lg">
+                <div class="grid grid-cols-2">
+                  <div>
+                    <a
+                      href="#"
+                      class="truncate text-sm font-semibold leading-none text-gray-900 hover:underline">
+                      Adizero SL2 Running Shoes
+                    </a>
+                    <p
+                      class="mt-0.5 truncate text-sm font-normal text-gray-500">
+                      3,000,000₫
+                    </p>
+                  </div>
+
+                  <div class="flex items-center justify-end gap-6">
+                    <p class="text-sm font-normal leading-none text-gray-500">
+                      Qty: 1
+                    </p>
+
+                    <button
+                      data-tooltip-target="tooltipRemoveItem1a"
+                      type="button"
+                      class="text-red-600 hover:text-red-700">
+                      <span class="sr-only">Remove</span>
+                      <svg
+                        class="h-4 w-4"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path
+                          fill-rule="evenodd"
+                          d="M2 12a10 10 0 1 1 20 0 10 10 0 0 1-20 0Zm7.7-3.7a1 1 0 0 0-1.4 1.4l2.3 2.3-2.3 2.3a1 1 0 1 0 1.4 1.4l2.3-2.3 2.3 2.3a1 1 0 0 0 1.4-1.4L13.4 12l2.3-2.3a1 1 0 0 0-1.4-1.4L12 10.6 9.7 8.3Z"
+                          clip-rule="evenodd" />
+                      </svg>
+                    </button>
+                    <div
+                      id="tooltipRemoveItem1a"
+                      role="tooltip"
+                      class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300">
+                      Remove item
+                      <div class="tooltip-arrow" data-popper-arrow></div>
+                    </div>
+                  </div>
+                </div>
+
+                <a
+                  href="./cart.html"
+                  title=""
+                  class="mb-2 me-2 inline-flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300"
+                  role="button">
+                  View My Cart
+                </a>
+              </div>
+
+              <button
+                id="userDropdownButton1"
+                data-dropdown-toggle="userDropdown1"
+                type="button"
+                class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 text-sm font-medium leading-none text-gray-900">
+                <svg
+                  class="w-5 h-5 me-1"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24">
+                  <path
+                    stroke="currentColor"
+                    stroke-width="2"
+                    d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                </svg>
+                Account
+                <svg
+                  class="w-4 h-4 text-gray-900 ms-1"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24">
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m19 9-7 7-7-7" />
+                </svg>
+              </button>
+
+              <div
+                id="userDropdown1"
+                class="hidden z-10 w-56 divide-y divide-gray-100 overflow-hidden overflow-y-auto rounded-lg bg-white antialiased shadow">
+                <ul class="p-2 text-start text-sm font-medium text-gray-900">
+                  <li>
+                    <a
+                      href="#"
+                      title=""
+                      class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100">
+                      Login
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      title=""
+                      class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100">
+                      Register
+                    </a>
+                  </li>
+                </ul>
+
+                <!-- <div
+                  class="p-2 text-sm font-medium text-gray-900">
+                  <a
+                    href="#"
+                    title=""
+                    class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100">
+                    Sign Out
+                  </a>
+                </div> -->
+              </div>
+
+              <button
+                type="button"
+                data-collapse-toggle="ecommerce-navbar-menu-1"
+                aria-controls="ecommerce-navbar-menu-1"
+                aria-expanded="false"
+                class="inline-flex lg:hidden items-center justify-center hover:bg-gray-100 rounded-md p-2 text-gray-900">
+                <span class="sr-only">Open Menu</span>
+                <svg
+                  class="w-5 h-5"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24">
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-width="2"
+                    d="M5 7h14M5 12h14M5 17h14" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div
+            id="ecommerce-navbar-menu-1"
+            class="bg-gray-50 border border-gray-200 rounded-lg py-3 hidden px-4 mt-4">
+            <ul class="text-gray-900 text-sm font-medium space-y-3">
+              <li>
+                <a href="./" class="hover:text-primary-700">Home</a>
+              </li>
+              <li>
+                <a href="#" class="hover:text-primary-700">Men</a>
+              </li>
+              <li>
+                <a href="#" class="hover:text-primary-700">Women</a>
+              </li>
+              <li>
+                <a href="#" class="hover:text-primary-700">Kids</a>
+              </li>
+              <li>
+                <a href="#" class="hover:text-primary-700">Sports</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="cart bg-white py-8 antialiased">
+      <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+        <h2 class="text-xl font-semibold text-gray-900">Shopping Cart</h2>
+
+        <div class="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
+          <div class="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl">
+            <div class="space-y-6">
+              <div
+                class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm md:p-6">
+                <div
+                  class="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
+                  <a href="#" class="shrink-0 md:order-1">
+                    <img
+                      class="h-20 w-20"
+                      src="../../assets/img/adidas-shoe.png"
+                      alt="" />
+                  </a>
+
+                  <label for="counter-input" class="sr-only">
+                    Choose quantity:
+                  </label>
+                  <div
+                    class="flex items-center justify-between md:order-3 md:justify-end">
+                    <div class="flex items-center">
+                      <button
+                        type="button"
+                        id="decrement-button"
+                        data-input-counter-decrement="counter-input"
+                        class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100">
+                        <svg
+                          class="h-2.5 w-2.5 text-gray-900"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 18 2">
+                          <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M1 1h16" />
+                        </svg>
+                      </button>
+                      <input
+                        type="text"
+                        id="counter-input"
+                        data-input-counter
+                        class="w-10 shrink-0 border-0 bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0"
+                        placeholder=""
+                        value="2"
+                        required />
+                      <button
+                        type="button"
+                        id="increment-button"
+                        data-input-counter-increment="counter-input"
+                        class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100">
+                        <svg
+                          class="h-2.5 w-2.5 text-gray-900"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 18 18">
+                          <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 1v16M1 9h16" />
+                        </svg>
+                      </button>
+                    </div>
+                    <div class="text-end md:order-4 md:w-32">
+                      <p class="text-base font-bold text-gray-900">$1,499</p>
+                    </div>
+                  </div>
+
+                  <div
+                    class="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
+                    <a
+                      href="#"
+                      class="text-base font-medium text-gray-900 hover:underline">
+                      Adidas ZX 750
+                    </a>
+
+                    <div class="flex items-center gap-4">
+                      <button
+                        type="button"
+                        class="inline-flex items-center text-sm font-medium text-red-600 hover:underline">
+                        <svg
+                          class="me-1.5 h-5 w-5"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          fill="none"
+                          viewBox="0 0 24 24">
+                          <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M6 18 17.94 6M18 18 6.06 6" />
+                        </svg>
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm md:p-6">
+                <div
+                  class="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
+                  <a href="#" class="shrink-0 md:order-1">
+                    <img
+                      class="h-20 w-20"
+                      src="../../assets/img/adidas-shoe.png"
+                      alt="" />
+                  </a>
+
+                  <label for="counter-input" class="sr-only">
+                    Choose quantity:
+                  </label>
+                  <div
+                    class="flex items-center justify-between md:order-3 md:justify-end">
+                    <div class="flex items-center">
+                      <button
+                        type="button"
+                        id="decrement-button-2"
+                        data-input-counter-decrement="counter-input-2"
+                        class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100">
+                        <svg
+                          class="h-2.5 w-2.5 text-gray-900"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 18 2">
+                          <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M1 1h16" />
+                        </svg>
+                      </button>
+                      <input
+                        type="text"
+                        id="counter-input-2"
+                        data-input-counter
+                        class="w-10 shrink-0 border-0 bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0"
+                        placeholder=""
+                        value="1"
+                        required />
+                      <button
+                        type="button"
+                        id="increment-button-2"
+                        data-input-counter-increment="counter-input-2"
+                        class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100">
+                        <svg
+                          class="h-2.5 w-2.5 text-gray-900"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 18 18">
+                          <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 1v16M1 9h16" />
+                        </svg>
+                      </button>
+                    </div>
+                    <div class="text-end md:order-4 md:w-32">
+                      <p class="text-base font-bold text-gray-900">$598</p>
+                    </div>
+                  </div>
+
+                  <div
+                    class="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
+                    <a
+                      href="#"
+                      class="text-base font-medium text-gray-900 hover:underline">
+                      Adidas ZX 750
+                    </a>
+
+                    <div class="flex items-center gap-4">
+                      <button
+                        type="button"
+                        class="inline-flex items-center text-sm font-medium text-red-600 hover:underline">
+                        <svg
+                          class="me-1.5 h-5 w-5"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          fill="none"
+                          viewBox="0 0 24 24">
+                          <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M6 18 17.94 6M18 18 6.06 6" />
+                        </svg>
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="hidden xl:mt-8 xl:block">
+              <h3 class="text-2xl font-semibold text-gray-900">
+                People also bought
+              </h3>
+              <div class="mt-6 grid grid-cols-3 gap-4 sm:mt-8">
+                <div
+                  class="space-y-6 overflow-hidden rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+                  <a href="#" class="overflow-hidden rounded">
+                    <img
+                      class="mx-auto h-44 w-44"
+                      src="../../assets/img/adidas-shoe.png"
+                      alt="" />
+                  </a>
+                  <div>
+                    <a
+                      href="#"
+                      class="text-lg font-semibold leading-tight text-gray-900 hover:underline">
+                      Adidas ZX 750
+                    </a>
+                    <p class="mt-2 text-base font-normal text-gray-500">
+                      These shoes are designed for comfort and performance,
+                      featuring a lightweight build and responsive cushioning.
+                    </p>
+                  </div>
+                  <div>
+                    <p class="text-lg font-bold text-gray-900">
+                      <span class="line-through">$399,99</span>
+                    </p>
+                    <p class="text-lg font-bold leading-tight text-red-600">
+                      $299
+                    </p>
+                  </div>
+                  <div class="mt-6 flex items-center gap-2.5">
+                    <button
+                      type="button"
+                      class="inline-flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300">
+                      <svg
+                        class="-ms-2 me-2 h-5 w-5"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="none"
+                        viewBox="0 0 24 24">
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7h-1M8 7h-.688M13 5v4m-2-2h4" />
+                      </svg>
+                      Add to cart
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="space-y-6 overflow-hidden rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+                  <a href="#" class="overflow-hidden rounded">
+                    <img
+                      class="mx-auto h-44 w-44"
+                      src="../../assets/img/adidas-shoe.png"
+                      alt="" />
+                  </a>
+                  <div>
+                    <a
+                      href="#"
+                      class="text-lg font-semibold leading-tight text-gray-900 hover:underline">
+                      Adidas ZX 750
+                    </a>
+                    <p class="mt-2 text-base font-normal text-gray-500">
+                      These shoes are designed for comfort and performance,
+                      featuring a lightweight build and responsive cushioning.
+                    </p>
+                  </div>
+                  <div>
+                    <p class="text-lg font-bold text-gray-900">
+                      <span class="line-through">$799,99</span>
+                    </p>
+                    <p class="text-lg font-bold leading-tight text-red-600">
+                      $499
+                    </p>
+                  </div>
+                  <div class="mt-6 flex items-center gap-2.5">
+                    <button
+                      type="button"
+                      class="inline-flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300">
+                      <svg
+                        class="-ms-2 me-2 h-5 w-5"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="none"
+                        viewBox="0 0 24 24">
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7h-1M8 7h-.688M13 5v4m-2-2h4" />
+                      </svg>
+                      Add to cart
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="space-y-6 overflow-hidden rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+                  <a href="#" class="overflow-hidden rounded">
+                    <img
+                      class="mx-auto h-44 w-44"
+                      src="../../assets/img/adidas-shoe.png"
+                      alt="" />
+                  </a>
+                  <div>
+                    <a
+                      href="#"
+                      class="text-lg font-semibold leading-tight text-gray-900 hover:underline">
+                      Adidas ZX 750
+                    </a>
+                    <p class="mt-2 text-base font-normal text-gray-500">
+                      These shoes are designed for comfort and performance,
+                      featuring a lightweight build and responsive cushioning.
+                    </p>
+                  </div>
+                  <div>
+                    <p class="text-lg font-bold text-gray-900">
+                      <span class="line-through">$1799,99</span>
+                    </p>
+                    <p class="text-lg font-bold leading-tight text-red-600">
+                      $1199
+                    </p>
+                  </div>
+                  <div class="mt-6 flex items-center gap-2.5">
+                    <button
+                      type="button"
+                      class="inline-flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300">
+                      <svg
+                        class="-ms-2 me-2 h-5 w-5"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="none"
+                        viewBox="0 0 24 24">
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7h-1M8 7h-.688M13 5v4m-2-2h4" />
+                      </svg>
+                      Add to cart
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full">
+            <div
+              class="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
+              <p class="text-xl font-semibold text-gray-900">Order summary</p>
+
+              <div class="space-y-4">
+                <div class="space-y-2">
+                  <dl class="flex items-center justify-between gap-4">
+                    <dt class="text-base font-normal text-gray-500">
+                      Original price
+                    </dt>
+                    <dd class="text-base font-medium text-gray-900">
+                      $7,592.00
+                    </dd>
+                  </dl>
+
+                  <dl class="flex items-center justify-between gap-4">
+                    <dt class="text-base font-normal text-gray-500">Savings</dt>
+                    <dd class="text-base font-medium text-green-600">
+                      -$299.00
+                    </dd>
+                  </dl>
+
+                  <dl class="flex items-center justify-between gap-4">
+                    <dt class="text-base font-normal text-gray-500">
+                      Store Pickup
+                    </dt>
+                    <dd class="text-base font-medium text-gray-900">$99</dd>
+                  </dl>
+
+                  <dl class="flex items-center justify-between gap-4">
+                    <dt class="text-base font-normal text-gray-500">Tax</dt>
+                    <dd class="text-base font-medium text-gray-900">$799</dd>
+                  </dl>
+                </div>
+
+                <dl
+                  class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2">
+                  <dt class="text-base font-bold text-gray-900">Total</dt>
+                  <dd class="text-base font-bold text-gray-900">$8,191.00</dd>
+                </dl>
+              </div>
+
+              <a
+                href="#"
+                class="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300">
+                Proceed to Checkout
+              </a>
+
+              <div class="flex items-center justify-center gap-2">
+                <span class="text-sm font-normal text-gray-500">or</span>
+                <a
+                  href="./"
+                  title=""
+                  class="inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline hover:no-underline">
+                  Continue Shopping
+                  <svg
+                    class="h-5 w-5"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24">
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 12H5m14 0-4 4m4-4-4-4" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="p-4 bg-white sm:p-6">
+      <div class="mx-auto max-w-screen-xl">
+        <div class="md:flex md:justify-between">
+          <div class="mb-6 md:mb-0">
+            <a href="./" class="flex items-center">
+              <img
+                src="../../assets/img/running-shoe.png"
+                class="mr-3 h-8"
+                alt="ShoesStore Logo" />
+              <span
+                class="self-center text-2xl font-semibold whitespace-nowrap">
+                ShoesStore
+              </span>
+            </a>
+          </div>
+          <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
+            <div>
+              <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase">
+                Resources
+              </h2>
+              <ul class="text-gray-600">
+                <li class="mb-4">
+                  <a href="./" class="hover:underline">ShoesStore</a>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase">
+                Follow us
+              </h2>
+              <ul class="text-gray-600">
+                <li class="mb-4">
+                  <a
+                    href="https://github.com/vunguyenkhanh"
+                    class="hover:underline">
+                    Github
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.facebook.com/VuNguyenKhanh.Profile"
+                    class="hover:underline">
+                    Facebook
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase">
+                Legal
+              </h2>
+              <ul class="text-gray-600">
+                <li class="mb-4">
+                  <a href="#" class="hover:underline">Privacy Policy</a>
+                </li>
+                <li>
+                  <a href="#" class="hover:underline">Terms &amp; Conditions</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <hr class="my-6 border-gray-200 sm:mx-auto lg:my-8" />
+        <div class="sm:flex sm:items-center sm:justify-between">
+          <span class="text-sm text-gray-500 sm:text-center">
+            © 2024
+            <a href="./" class="hover:underline">ShoesStore™</a>
+            . All Rights Reserved.
+          </span>
+          <div class="flex mt-4 space-x-6 sm:justify-center sm:mt-0">
+            <a
+              href="https://www.facebook.com/VuNguyenKhanh.Profile"
+              class="text-gray-500 hover:text-gray-900">
+              <svg
+                class="w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true">
+                <path
+                  fill-rule="evenodd"
+                  d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
+                  clip-rule="evenodd" />
+              </svg>
+            </a>
+            <a
+              href="https://www.instagram.com/kain.6599"
+              class="text-gray-500 hover:text-gray-900">
+              <svg
+                class="w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true">
+                <path
+                  fill-rule="evenodd"
+                  d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
+                  clip-rule="evenodd" />
+              </svg>
+            </a>
+            <a
+              href="https://x.com/nguyenkhanh6599"
+              class="text-gray-500 hover:text-gray-900">
+              <svg
+                class="w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true">
+                <path
+                  d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+              </svg>
+            </a>
+            <a
+              href="https://github.com/vunguyenkhanh"
+              class="text-gray-500 hover:text-gray-900">
+              <svg
+                class="w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true">
+                <path
+                  fill-rule="evenodd"
+                  d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                  clip-rule="evenodd" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!--Taiwind JS -->
+    <script src="../../assets/js/tailwind.js"></script>
+
+    <!-- Flowbite JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+
+    <!-- UI JS -->
+    <script src="../../assets/js/ui.js"></script>
+  </body>
+</html>
