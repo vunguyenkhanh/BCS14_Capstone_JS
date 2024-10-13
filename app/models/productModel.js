@@ -27,3 +27,5 @@ class ProductModel {
     this.image = image;
   }
 }
+
+export { ProductModel };
