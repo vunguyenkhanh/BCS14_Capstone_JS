@@ -302,7 +302,7 @@ function updateCartUI() {
         <a href="#" class="truncate text-sm font-semibold leading-none text-gray-900 hover:underline">
           ${formatProductName(item.name)}
         </a>
-        <p class="mt-0.5 truncate text-sm font-normal text-gray-500">$${item.price}</p>
+        <p class="mt-0.5 truncate text-sm font-normal text-gray-500">$${(item.price * item.quantity)}</p>
       </div>
       <div class="flex items-center gap-6">
         <div class="flex items-center gap-2">
