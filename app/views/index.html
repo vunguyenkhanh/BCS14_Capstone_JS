@@ -57,84 +57,39 @@
                 id="myCartDropdownButton1"
                 data-dropdown-toggle="myCartDropdown1"
                 type="button"
-                class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 text-sm font-medium leading-none text-gray-900">
+                class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 text-sm font-medium leading-none text-gray-900 relative">
                 <span class="sr-only">Cart</span>
-                <svg
-                  class="w-5 h-5 lg:me-1"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  viewBox="0 0 24 24">
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
-                </svg>
+                <div class="relative flex items-center">
+                  <svg
+                    class="w-5 h-5 lg:me-2"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24">
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
+                  </svg>
+                  <span
+                    id="cartCount"
+                    class="absolute -top-1 -right-0 inline-flex items-center justify-center w-3.5 h-3.5 text-[0.625rem] font-bold leading-none text-white bg-red-600 rounded-full">
+                    2
+                  </span>
+                </div>
                 <span class="hidden sm:flex">My Cart</span>
-                <svg
-                  class="hidden sm:flex w-4 h-4 text-gray-900 ms-1"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  viewBox="0 0 24 24">
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="m19 9-7 7-7-7" />
-                </svg>
               </button>
-
               <div
                 id="myCartDropdown1"
-                class="hidden z-10 mx-auto max-w-sm space-y-4 overflow-hidden rounded-lg bg-white p-4 antialiased shadow-lg">
-                <div class="grid grid-cols-2">
-                  <div>
-                    <a href="#" class="truncate text-sm font-semibold leading-none text-gray-900 hover:underline">
-                      Adizero SL2 Running Shoes
-                    </a>
-                    <p class="mt-0.5 truncate text-sm font-normal text-gray-500">3,000,000₫</p>
-                  </div>
-
-                  <div class="flex items-center justify-end gap-6">
-                    <p class="text-sm font-normal leading-none text-gray-500">Qty: 1</p>
-
-                    <button
-                      data-tooltip-target="tooltipRemoveItem1a"
-                      type="button"
-                      class="text-red-600 hover:text-red-700">
-                      <span class="sr-only">Remove</span>
-                      <svg
-                        class="h-4 w-4"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="currentColor"
-                        viewBox="0 0 24 24">
-                        <path
-                          fill-rule="evenodd"
-                          d="M2 12a10 10 0 1 1 20 0 10 10 0 0 1-20 0Zm7.7-3.7a1 1 0 0 0-1.4 1.4l2.3 2.3-2.3 2.3a1 1 0 1 0 1.4 1.4l2.3-2.3 2.3 2.3a1 1 0 0 0 1.4-1.4L13.4 12l2.3-2.3a1 1 0 0 0-1.4-1.4L12 10.6 9.7 8.3Z"
-                          clip-rule="evenodd" />
-                      </svg>
-                    </button>
-                    <div
-                      id="tooltipRemoveItem1a"
-                      role="tooltip"
-                      class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300">
-                      Remove item
-                      <div class="tooltip-arrow" data-popper-arrow></div>
-                    </div>
-                  </div>
-                </div>
-
+                class="hidden z-10 mx-auto max-w-lg space-y-4 overflow-hidden rounded-lg bg-white p-6 antialiased shadow-lg">
+                <div id="myCart" class="max-h-96 overflow-y-auto"></div>
                 <a
-                  href="#"
+                  id="viewCartButton"
+                  href="./cart.html"
                   title=""
                   class="mb-2 me-2 inline-flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300"
                   role="button">
@@ -360,7 +315,7 @@
       </div>
     </section>
 
-    <section class="products bg-gray-50 py-8 antialiased md:py-12">
+    <section id="products" class="products bg-gray-50 py-8 antialiased md:py-12">
       <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
         <h2 class="mb-4 text-5xl tracking-tight font-extrabold text-center text-gray-900">Products</h2>
         <p class="mb-8 lg:mb-16 font-light text-center text-gray-500 sm:text-xl">
@@ -498,9 +453,7 @@
             </div>
           </div>
         </div>
-        <div id="productList" class="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
-
-        </div>
+        <div id="productList" class="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4"></div>
         <!-- <div class="w-full text-center">
           <button
             type="button"
@@ -695,6 +648,10 @@
         </div>
       </div>
     </footer>
+
+    <div id="cartPopup" class="hidden fixed bottom-4 right-4 bg-primary-500 text-white p-4 rounded-lg shadow-lg z-50">
+      Product added to cart!
+    </div>
 
     <!--Taiwind JS -->
     <script src="../../assets/js/tailwind.js"></script>

@@ -1,5 +1,22 @@
 import { getDataAPI } from '../services/productService.js';
 import { ProductModel } from '../models/productModel.js';
+import { CartModel } from '../models/cartModel.js';
+
+let cartModel = new CartModel();
+let cart = cartModel.arrCart;
+let productList = [];
+
+function formatProductName(productName) {
+  return productName
+    .split(' ')
+    .map((word) => {
+      if (word.length === 2) {
+        return word.toUpperCase();
+      }
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    })
+    .join(' ');
+}
 
 function renderProductList(productList) {
   let content = '';
@@ -51,15 +68,9 @@ function renderProductList(productList) {
                 </div>
               </div>
 
-              <a href="#" class="text-lg font-semibold leading-tight text-gray-900 hover:underline">${product.name
-                .split(' ')
-                .map((word) => {
-                  if (word.length === 2) {
-                    return word.toUpperCase();
-                  }
-                  return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-                })
-                .join(' ')}</a>
+              <a href="#" class="text-lg font-semibold leading-tight text-gray-900 hover:underline">${formatProductName(
+                product.name,
+              )}</a>
 
               <div class="mt-2 flex items-center gap-2">
                 <div class="flex items-center">
@@ -158,7 +169,8 @@ function renderProductList(productList) {
 
                 <button
                   type="button"
-                  class="inline-flex items-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300">
+                  class="inline-flex items-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300"
+                  onclick="addToCart(${product.id})">
                   <svg
                     class="-ms-2 me-2 h-5 w-5"
                     aria-hidden="true"
@@ -188,8 +200,24 @@ function renderProductList(productList) {
 function getProductList() {
   getDataAPI()
     .then((result) => {
-      console.log(result.data);
-      console.log(result.data.content);
+      productList = result.data.content.map(
+        (product) =>
+          new ProductModel(
+            product.id,
+            product.name,
+            product.price,
+            product.description,
+            product.size,
+            product.shortDescription,
+            product.quantity,
+            product.deleted,
+            product.categories,
+            product.relatedProducts,
+            product.feature,
+            product.image,
+          ),
+      );
+      console.log('Product List:', productList); // Log the product list
       renderProductList(result.data.content);
     })
     .catch((error) => {
@@ -197,6 +225,151 @@ function getProductList() {
     });
 }
 
-window.onload = function() {
+window.onload = function () {
   getProductList();
+  loadCartFromLocalStorage();
+};
+
+window.addToCart = function (productId) {
+  console.log(`Adding product with ID: ${productId}`);
+  let product = getProductById(productId);
+  if (!product) {
+    return;
+  }
+
+  let existingProduct = cart.find((item) => item.id === productId);
+  if (existingProduct) {
+    existingProduct.quantity += 1;
+  } else {
+    product.quantity = 1;
+    cart.push(product);
+  }
+
+  console.log('Cart:', cart);
+  saveCartToLocalStorage();
+  updateCartUI();
+  showCartPopup();
+  updateCartCount();
+};
+
+function showCartPopup() {
+  const popup = document.getElementById('cartPopup');
+  popup.classList.remove('hidden');
+  setTimeout(() => {
+    popup.classList.add('hidden');
+  }, 2000);
+}
+
+function updateCartCount() {
+  const cartCount = document.getElementById('cartCount');
+  cartCount.textContent = cart.reduce((total, item) => total + item.quantity, 0);
+}
+
+function getProductById(productId) {
+  return productList.find((product) => product.id === productId);
+}
+
+function saveCartToLocalStorage() {
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+function updateCartUI() {
+  let cartElement = document.getElementById('myCart');
+  let viewCartButton = document.getElementById('viewCartButton');
+
+  if (cart.length === 0) {
+    cartElement.innerHTML = `
+      <div class="flex flex-col items-center justify-center p-4">
+        <svg class="h-16 w-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h18M9 3v18m6-18v18M4 21h16M4 7h16M4 11h16M4 15h16"></path>
+        </svg>
+        <p class="mt-4 text-lg font-semibold text-gray-500">Your cart is empty</p>
+        <a href="#products" class="mt-2 text-primary-600 hover:underline">Continue Shopping</a>
+      </div>
+    `;
+    viewCartButton.style.display = 'none';
+    return;
+  } else {
+    viewCartButton.style.display = 'inline-flex';
+  }
+
+  cartElement.innerHTML = cart
+    .map(
+      (item) => `
+    <div class="flex items-center justify-between p-2">
+      <img class="h-10 w-10 rounded" src="${item.image}" alt="${item.name}" />
+      <div class="flex-1 mx-4">
+        <a href="#" class="truncate text-sm font-semibold leading-none text-gray-900 hover:underline">
+          ${formatProductName(item.name)}
+        </a>
+        <p class="mt-0.5 truncate text-sm font-normal text-gray-500">$${item.price}</p>
+      </div>
+      <div class="flex items-center gap-6">
+        <div class="flex items-center gap-2">
+          <button type="button" class="text-gray-600 hover:text-gray-700" onclick="decreaseQuantity(${item.id})">
+            <span class="sr-only">Decrease quantity</span>
+            <svg class="h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+              <path fill-rule="evenodd" d="M5 12a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1Z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          <p class="text-sm font-normal leading-none text-gray-500">Qty: <span class="text-sm font-semibold leading-none text-gray-900">${
+            item.quantity
+          }</span></p>
+          <button type="button" class="text-gray-600 hover:text-gray-700" onclick="increaseQuantity(${item.id})">
+            <span class="sr-only">Increase quantity</span>
+            <svg class="h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+              <path fill-rule="evenodd" d="M12 5a1 1 0 0 1 1 1v5h5a1 1 0 1 1 0 2h-5v5a1 1 0 1 1-2 0v-5H6a1 1 0 1 1 0-2h5V6a1 1 0 0 1 1-1Z" clip-rule="evenodd" />
+            </svg>
+          </button>
+        </div>
+        <button type="button" class="text-red-600 hover:text-red-700" onclick="removeFromCart(${item.id})">
+          <span class="sr-only">Remove</span>
+          <svg class="h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" d="M2 12a10 10 0 1 1 20 0 10 10 0 0 1-20 0Zm7.7-3.7a1 1 0 0 0-1.4 1.4l2.3 2.3-2.3 2.3a1 1 0 1 0 1.4 1.4l2.3-2.3 2.3 2.3a1 1 0 0 0 1.4-1.4L13.4 12l2.3-2.3a1 1 0 0 0-1.4-1.4L12 10.6 9.7 8.3Z" clip-rule="evenodd" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  `,
+    )
+    .join('');
+}
+
+function loadCartFromLocalStorage() {
+  let savedCart = localStorage.getItem('cart');
+  if (savedCart) {
+    cart = JSON.parse(savedCart);
+    updateCartUI();
+    updateCartCount();
+  }
+}
+
+window.decreaseQuantity = function (productId) {
+  let product = cart.find((item) => item.id === productId);
+  if (product) {
+    product.quantity--;
+    if (product.quantity <= 0) {
+      cart = cart.filter((item) => item.id !== productId);
+    }
+    saveCartToLocalStorage();
+    updateCartUI();
+    updateCartCount(); // Cập nhật số lượng giỏ hàng
+  }
+};
+
+window.increaseQuantity = function (productId) {
+  let product = cart.find((item) => item.id === productId);
+  if (product) {
+    product.quantity++;
+    saveCartToLocalStorage();
+    updateCartUI();
+    updateCartCount(); // Cập nhật số lượng giỏ hàng
+  }
+};
+
+window.removeFromCart = function (productId) {
+  cart = cart.filter((item) => item.id !== productId);
+  saveCartToLocalStorage();
+  updateCartUI();
+  updateCartCount(); // Cập nhật số lượng giỏ hàng
 };
