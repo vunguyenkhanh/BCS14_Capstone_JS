@@ -254,6 +254,14 @@ window.onload = function () {
 };
 
 window.addToCart = function (productId) {
+  if (!isUserLoggedIn()) {
+    showPopup('Please log in to add product to your cart');
+    setTimeout(() => {
+      window.location.href = './login.html';
+    }, 2000);
+    return;
+  }
+
   getProductById(productId).then((product) => {
     if (!product) {
       return;
@@ -832,6 +840,14 @@ window.increaseDetailQuantity = function () {
 };
 
 window.addToCartFromDetail = function (productId) {
+  if (!isUserLoggedIn()) {
+    showPopup('Please log in to add product to your cart');
+    setTimeout(() => {
+      window.location.href = './login.html';
+    }, 2000);
+    return;
+  }
+
   let quantityInput = document.getElementById('detailQuantity');
   let quantity = parseInt(quantityInput.value);
 
@@ -854,6 +870,10 @@ window.addToCartFromDetail = function (productId) {
     showPopup('Product added to cart!');
     updateCartCount();
   }).catch((error) => {
-    // console.error('Error adding product to cart:', error);
+    console.error('Error adding product to cart:', error);
   });
 };
+
+function isUserLoggedIn() {
+  return localStorage.getItem('userToken') !== null;
+}
