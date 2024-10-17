@@ -77,11 +77,24 @@
                   </svg>
                   <span
                     id="cartCount"
-                    class="absolute -top-1 -right-0 inline-flex items-center justify-center w-3.5 h-3.5 text-[0.625rem] font-bold leading-none text-white bg-red-600 rounded-full">
-                    
-                  </span>
+                    class="absolute -top-1 -right-0 inline-flex items-center justify-center w-3.5 h-3.5 text-[0.625rem] font-bold leading-none text-white bg-red-600 rounded-full"></span>
                 </div>
                 <span class="hidden sm:flex">My Cart</span>
+                <svg
+                  class="w-4 h-4 text-gray-900 ms-1 hidden sm:flex"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24">
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m19 9-7 7-7-7" />
+                </svg>
               </button>
               <div
                 id="myCartDropdown1"
@@ -139,7 +152,7 @@
                 <ul class="p-2 text-start text-sm font-medium text-gray-900">
                   <li>
                     <a
-                      href="#"
+                      href="./login.html"
                       title=""
                       class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100">
                       Login
@@ -147,7 +160,7 @@
                   </li>
                   <li>
                     <a
-                      href="#"
+                      href="./register.html"
                       title=""
                       class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100">
                       Register
@@ -522,7 +535,7 @@
               </div>
               <div id="myTabContent">
                 <div class="flex flex-wrap gap-4" id="brand" role="tabpanel" aria-labelledby="brand-tab">
-                  <div class="flex items-center">
+                  <!-- <div class="flex items-center">
                     <input
                       id="vans"
                       type="checkbox"
@@ -541,7 +554,7 @@
                       class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500" />
 
                     <label for="nike" class="ml-2 text-sm font-medium text-gray-900">NIKE (97)</label>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -549,9 +562,10 @@
             <!-- Modal footer -->
             <div class="flex items-center space-x-4 rounded-b p-4">
               <button
+                id="showResultButton"
                 type="submit"
-                class="rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300">
-                Show 50 results
+                class="result-button rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300">
+                Show results
               </button>
               <button
                 type="reset"
@@ -649,9 +663,9 @@
       </div>
     </footer>
 
-    <div id="cartPopup" class="hidden fixed bottom-4 right-4 bg-primary-500 text-white p-4 rounded-lg shadow-lg z-50">
-      Product added to cart!
-    </div>
+    <div
+      id="myPopup"
+      class="hidden fixed bottom-4 right-4 bg-primary-500 text-white p-4 rounded-lg shadow-lg z-50"></div>
 
     <!--Taiwind JS -->
     <script src="../../assets/js/tailwind.js"></script>

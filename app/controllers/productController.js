@@ -1,4 +1,4 @@
-import { getDataAPI } from '../services/productService.js';
+import { getAllProduct, getCategoryAPI, getProductByCategory } from '../services/productService.js';
 import { ProductModel } from '../models/productModel.js';
 import { CartModel } from '../models/cartModel.js';
 
@@ -204,7 +204,7 @@ function renderProductList(productList) {
 }
 
 function getProductList() {
-  getDataAPI()
+  getAllProduct()
     .then((result) => {
       productList = result.data.content.map(
         (product) =>
@@ -235,6 +235,7 @@ window.onload = function () {
   loadCartCount();
   getProductList();
   loadCartFromLocalStorage();
+  getCategoryList();
 };
 
 window.addToCart = function (productId) {
@@ -253,19 +254,20 @@ window.addToCart = function (productId) {
 
   saveCartToLocalStorage();
   updateCartUI();
-  showCartPopup();
+  showPopup('Product added to cart!');
   updateCartCount();
 };
 
-function showCartPopup() {
-  let popup = document.getElementById('cartPopup');
+function showPopup(message) {
+  let popup = document.getElementById('myPopup');
   if (popup) {
+    popup.textContent = message;
     popup.classList.remove('hidden');
     setTimeout(() => {
       popup.classList.add('hidden');
     }, 2000);
   } else {
-    // console.error('Element with ID "cartPopup" not found.');
+    console.error('Element with ID "cartPopup" not found.');
   }
 }
 
@@ -520,3 +522,71 @@ window.removeFromCart = function (productId) {
   updateCartDetailUI();
   updateCartCount();
 };
+
+function getCategoryList() {
+  getCategoryAPI()
+    .then((result) => {
+      let categoryList = result.data.content;
+      let categoryElement = document.getElementById('brand');
+      if (categoryElement) {
+        let content = categoryList
+          .map(
+            (cat) => `
+          <div class="flex items-center">
+            <input
+              id="${cat.id}"
+              type="checkbox"
+              value="${cat.id}"
+              class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500" />
+
+            <label for="${cat.id}" class="ml-2 text-sm font-medium text-gray-900">${cat.category} (${
+              JSON.parse(cat.productList).length
+            })</label>
+          </div>
+        `,
+          )
+          .join('');
+        categoryElement.innerHTML = content;
+
+
+      } else {
+        // console.error('Element with ID "brand" not found.');
+      }
+    })
+    .catch((error) => {
+      console.log('error', error);
+    });
+}
+
+function getSelectedCategories() {
+  const checkboxes = document.querySelectorAll('#brand input[type="checkbox"]:checked');
+  return Array.from(checkboxes).map((checkbox) => checkbox.value);
+}
+
+document.getElementById('showResultButton').addEventListener('click', (event) => {
+  event.preventDefault();
+
+  const selectedCategories = getSelectedCategories();
+  if (selectedCategories.length > 0) {
+    getProductByCategory(selectedCategories)
+      .then((results) => {
+        // Flatten the array of arrays
+        const productList = results.map((result) => result.data.content).flat();
+        showPopup('Products filtered successfully!');
+        renderProductList(productList);
+      })
+      .catch((error) => {
+        console.log('error', error);
+      });
+  } else {
+    getAllProduct()
+      .then((result) => {
+        const productList = result.data.content;
+        showPopup('Products filtered successfully!');
+        renderProductList(productList);
+      })
+      .catch((error) => {
+        console.log('error', error);
+      });
+  }
+});
