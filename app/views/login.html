@@ -321,7 +321,10 @@
               class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
               Sign in to your account
             </h1>
-            <form class="space-y-4 md:space-y-6" action="#">
+            <form
+              class="space-y-4 md:space-y-6"
+              action="#"
+              onsubmit="handleLogin(event)">
               <div>
                 <label
                   for="email"
@@ -361,9 +364,7 @@
                       required="" />
                   </div>
                   <div class="ml-3 text-sm">
-                    <label
-                      for="remember"
-                      class="text-gray-500">
+                    <label for="remember" class="text-gray-500">
                       Remember me
                     </label>
                   </div>
@@ -522,6 +523,10 @@
       </div>
     </footer>
 
+    <div
+      id="myPopup"
+      class="hidden fixed bottom-4 right-4 bg-primary-500 text-white p-4 rounded-lg shadow-lg z-50"></div>
+
     <!--Taiwind JS -->
     <script src="../../assets/js/tailwind.js"></script>
 
@@ -530,5 +535,11 @@
 
     <!-- UI JS -->
     <script src="../../assets/js/ui.js"></script>
+
+    <!-- Axios CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+
+    <!-- Auth Controller JS -->
+    <script type="module" src="../controllers/authController.js"></script>
   </body>
 </html>
