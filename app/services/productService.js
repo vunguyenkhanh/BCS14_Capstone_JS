@@ -22,4 +22,11 @@ function getProductByCategory(categoryIds) {
   return Promise.all(promises);
 }
 
-export { getAllProduct, getCategoryAPI, getProductByCategory };
+function getProductDetail(productId) {
+  return axios({
+    method: 'get',
+    url: `https://shop.cyberlearn.vn/api/Product/getbyid?id=${productId}`,
+  });
+}
+
+export { getAllProduct, getCategoryAPI, getProductByCategory, getProductDetail };

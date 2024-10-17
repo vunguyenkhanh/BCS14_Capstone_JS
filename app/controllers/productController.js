@@ -1,4 +1,9 @@
-import { getAllProduct, getCategoryAPI, getProductByCategory } from '../services/productService.js';
+import {
+  getAllProduct,
+  getCategoryAPI,
+  getProductByCategory,
+  getProductDetail,
+} from '../services/productService.js';
 import { ProductModel } from '../models/productModel.js';
 import { CartModel } from '../models/cartModel.js';
 
@@ -7,6 +12,9 @@ let cart = cartModel.arrCart;
 let productList = [];
 
 function formatProductName(productName) {
+  if (!productName || typeof productName !== 'string') {
+    return ''; // Return an empty string or some default value
+  }
   return productName
     .split(' ')
     .map((word) => {
@@ -24,7 +32,7 @@ function renderProductList(productList) {
     let productItem = `
           <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
             <div class="h-56 w-full">
-              <a href="../views/productDetail.html">
+              <a href="../views/productDetail.html?productid=${product.id}">
                 <img class="mx-auto h-full" src="${product.image}" alt="" />
               </a>
             </div>
@@ -35,7 +43,7 @@ function renderProductList(productList) {
                 </span>
 
                 <div class="flex items-center justify-end gap-1">
-                <a href="../views/productDetail.html">
+                <a href="../views/productDetail.html?productid=${product.id}">
                   <button
                     type="button"
                     data-tooltip-target="tooltip-quick-look"
@@ -165,7 +173,9 @@ function renderProductList(productList) {
               </ul>
 
               <div class="mt-4 flex items-center justify-between gap-4">
-                <p class="text-2xl font-extrabold leading-tight text-gray-900">$${product.price}</p>
+                <p class="text-2xl font-extrabold leading-tight text-gray-900">$${
+                  product.price
+                }</p>
 
                 <button
                   type="button"
@@ -233,29 +243,35 @@ function getProductList() {
 
 window.onload = function () {
   loadCartCount();
-  getProductList();
   loadCartFromLocalStorage();
-  getCategoryList();
+
+  if (window.location.pathname.includes('productDetail.html')) {
+    getProductDetailById();
+  } else {
+    getProductList();
+    getCategoryList();
+  }
 };
 
 window.addToCart = function (productId) {
-  let product = getProductById(productId);
-  if (!product) {
-    return;
-  }
+  getProductById(productId).then((product) => {
+    if (!product) {
+      return;
+    }
 
-  let existingProduct = cart.find((item) => item.id === productId);
-  if (existingProduct) {
-    existingProduct.quantity += 1;
-  } else {
-    product.quantity = 1;
-    cart.push(product);
-  }
+    let existingProduct = cart.find((item) => item.id === productId);
+    if (existingProduct) {
+      existingProduct.quantity += 1;
+    } else {
+      product.quantity = 1;
+      cart.push(product);
+    }
 
-  saveCartToLocalStorage();
-  updateCartUI();
-  showPopup('Product added to cart!');
-  updateCartCount();
+    saveCartToLocalStorage();
+    updateCartUI();
+    showPopup('Product added to cart!');
+    updateCartCount();
+  });
 };
 
 function showPopup(message) {
@@ -267,7 +283,7 @@ function showPopup(message) {
       popup.classList.add('hidden');
     }, 2000);
   } else {
-    console.error('Element with ID "cartPopup" not found.');
+    // console.log('Element with ID "cartPopup" not found.');
   }
 }
 
@@ -285,7 +301,32 @@ function updateCartCount() {
 }
 
 function getProductById(productId) {
-  return productList.find((product) => product.id === productId);
+  let product = productList.find((product) => product.id === productId);
+  if (product) {
+    return Promise.resolve(product);
+  }
+  // If not found in productList, fetch from API
+  return getProductDetail(productId)
+    .then((result) => {
+      return new ProductModel(
+        result.data.content.id,
+        result.data.content.name,
+        result.data.content.price,
+        result.data.content.description,
+        result.data.content.size,
+        result.data.content.shortDescription,
+        result.data.content.quantity,
+        result.data.content.deleted,
+        result.data.content.categories,
+        result.data.content.relatedProducts,
+        result.data.content.feature,
+        result.data.content.image,
+      );
+    })
+    .catch((error) => {
+      console.error('Error fetching product:', error);
+      return null;
+    });
 }
 
 function saveCartToLocalStorage() {
@@ -325,11 +366,15 @@ function updateCartUI() {
         <a href="#" class="truncate text-sm font-semibold leading-none text-gray-900 hover:underline">
           ${formatProductName(item.name)}
         </a>
-        <p class="mt-0.5 truncate text-sm font-normal text-gray-500">$${item.price * item.quantity}</p>
+        <p class="mt-0.5 truncate text-sm font-normal text-gray-500">$${
+          item.price * item.quantity
+        }</p>
       </div>
       <div class="flex items-center gap-6">
         <div class="flex items-center gap-2">
-          <button type="button" class="text-gray-600 hover:text-gray-700" onclick="decreaseQuantity(${item.id})">
+          <button type="button" class="text-gray-600 hover:text-gray-700" onclick="decreaseQuantity(${
+            item.id
+          })">
             <span class="sr-only">Decrease quantity</span>
             <svg class="h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
               <path fill-rule="evenodd" d="M5 12a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1Z" clip-rule="evenodd" />
@@ -338,14 +383,18 @@ function updateCartUI() {
           <p class="text-sm font-normal leading-none text-gray-500">Qty: <span class="text-sm font-semibold leading-none text-gray-900">${
             item.quantity
           }</span></p>
-          <button type="button" class="text-gray-600 hover:text-gray-700" onclick="increaseQuantity(${item.id})">
+          <button type="button" class="text-gray-600 hover:text-gray-700" onclick="increaseQuantity(${
+            item.id
+          })">
             <span class="sr-only">Increase quantity</span>
             <svg class="h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
               <path fill-rule="evenodd" d="M12 5a1 1 0 0 1 1 1v5h5a1 1 0 1 1 0 2h-5v5a1 1 0 1 1-2 0v-5H6a1 1 0 1 1 0-2h5V6a1 1 0 0 1 1-1Z" clip-rule="evenodd" />
             </svg>
           </button>
         </div>
-        <button type="button" class="text-red-600 hover:text-red-700" onclick="removeFromCart(${item.id})">
+        <button type="button" class="text-red-600 hover:text-red-700" onclick="removeFromCart(${
+          item.id
+        })">
           <span class="sr-only">Remove</span>
           <svg class="h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
             <path fill-rule="evenodd" d="M2 12a10 10 0 1 1 20 0 10 10 0 0 1-20 0Zm7.7-3.7a1 1 0 0 0-1.4 1.4l2.3 2.3-2.3 2.3a1 1 0 1 0 1.4 1.4l2.3-2.3 2.3 2.3a1 1 0 0 0 1.4-1.4L13.4 12l2.3-2.3a1 1 0 0 0-1.4-1.4L12 10.6 9.7 8.3Z" clip-rule="evenodd" />
@@ -380,7 +429,9 @@ function updateCartDetailUI() {
               <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm md:p-6">
                 <div class="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
                   <a href="#" class="shrink-0 md:order-1">
-                    <img class="h-20 w-20" src="${item.image}" alt="${item.name}" />
+                    <img class="h-20 w-20" src="${item.image}" alt="${
+            item.name
+          }" />
                   </a>
 
                   <label for="counter-input" class="sr-only">Choose quantity:</label>
@@ -436,7 +487,9 @@ function updateCartDetailUI() {
                       </button>
                     </div>
                     <div class="text-end md:order-4 md:w-32">
-                      <p class="text-base font-bold text-gray-900">$${item.price * item.quantity}</p>
+                      <p class="text-base font-bold text-gray-900">$${
+                        item.price * item.quantity
+                      }</p>
                     </div>
                   </div>
 
@@ -539,16 +592,16 @@ function getCategoryList() {
               value="${cat.id}"
               class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500" />
 
-            <label for="${cat.id}" class="ml-2 text-sm font-medium text-gray-900">${cat.category} (${
-              JSON.parse(cat.productList).length
-            })</label>
+            <label for="${
+              cat.id
+            }" class="ml-2 text-sm font-medium text-gray-900">${
+              cat.category
+            } (${JSON.parse(cat.productList).length})</label>
           </div>
         `,
           )
           .join('');
         categoryElement.innerHTML = content;
-
-
       } else {
         // console.error('Element with ID "brand" not found.');
       }
@@ -559,34 +612,251 @@ function getCategoryList() {
 }
 
 function getSelectedCategories() {
-  const checkboxes = document.querySelectorAll('#brand input[type="checkbox"]:checked');
+  let checkboxes = document.querySelectorAll(
+    '#brand input[type="checkbox"]:checked',
+  );
   return Array.from(checkboxes).map((checkbox) => checkbox.value);
 }
 
-document.getElementById('showResultButton').addEventListener('click', (event) => {
-  event.preventDefault();
+let showResultButton = document.getElementById('showResultButton');
+if (showResultButton) {
+  showResultButton.addEventListener('click', (event) => {
+    event.preventDefault();
 
-  const selectedCategories = getSelectedCategories();
-  if (selectedCategories.length > 0) {
-    getProductByCategory(selectedCategories)
-      .then((results) => {
-        // Flatten the array of arrays
-        const productList = results.map((result) => result.data.content).flat();
-        showPopup('Products filtered successfully!');
-        renderProductList(productList);
-      })
-      .catch((error) => {
-        console.log('error', error);
-      });
-  } else {
-    getAllProduct()
-      .then((result) => {
-        const productList = result.data.content;
-        showPopup('Products filtered successfully!');
-        renderProductList(productList);
-      })
-      .catch((error) => {
-        console.log('error', error);
-      });
+    let selectedCategories = getSelectedCategories();
+    if (selectedCategories.length > 0) {
+      getProductByCategory(selectedCategories)
+        .then((results) => {
+          // Flatten the array of arrays
+          let productList = results.map((result) => result.data.content).flat();
+          showPopup('Products filtered successfully!');
+          renderProductList(productList);
+        })
+        .catch((error) => {
+          console.log('error', error);
+        });
+    } else {
+      getAllProduct()
+        .then((result) => {
+          let productList = result.data.content;
+          showPopup('Products filtered successfully!');
+          renderProductList(productList);
+        })
+        .catch((error) => {
+          console.log('error', error);
+        });
+    }
+  });
+}
+
+function getProductDetailById() {
+  let urlParams = new URLSearchParams(window.location.search);
+  let productId = urlParams.get('productid');
+
+  if (!productId) {
+    console.error('Product ID not found in URL');
+    return;
   }
-});
+
+  getProductDetail(productId)
+    .then((result) => {
+      let product = result.data.content;
+      renderProductDetail(product);
+    })
+    .catch((error) => {
+      console.log('error', error);
+    });
+}
+
+function renderProductDetail(product) {
+  let productDetailElement = document.getElementById('productDetail');
+  let cleanedDescription = product.description.replace(/about this shoe:/i, '');
+
+  if (!productDetailElement) {
+    console.error('Product detail element not found');
+    return;
+  }
+
+  productDetailElement.innerHTML = `
+    <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
+    <img class="w-full" src="${product.image}" alt="" />
+    </div>
+
+    <div class="mt-6 sm:mt-8 lg:mt-0">
+    <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
+    ${formatProductName(product.name)}
+    </h1>
+    <div class="mt-4 sm:items-center sm:gap-4 sm:flex">
+      <p class="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white">$${
+        product.price
+      }</p>
+
+      <div class="flex items-center gap-2 mt-2 sm:mt-0">
+      <div class="flex items-center gap-1">
+        <svg
+        class="w-4 h-4 text-yellow-300"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="currentColor"
+        viewBox="0 0 24 24">
+        <path
+          d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
+        </svg>
+        <svg
+        class="w-4 h-4 text-yellow-300"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="currentColor"
+        viewBox="0 0 24 24">
+        <path
+          d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
+        </svg>
+        <svg
+        class="w-4 h-4 text-yellow-300"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="currentColor"
+        viewBox="0 0 24 24">
+        <path
+          d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
+        </svg>
+        <svg
+        class="w-4 h-4 text-yellow-300"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="currentColor"
+        viewBox="0 0 24 24">
+        <path
+          d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
+        </svg>
+        <svg
+        class="w-4 h-4 text-yellow-300"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="currentColor"
+        viewBox="0 0 24 24">
+        <path
+          d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
+        </svg>
+      </div>
+      <p class="text-sm font-medium leading-none text-gray-500 dark:text-gray-400">(5.0)</p>
+      <a
+        href="#"
+        class="text-sm font-medium leading-none text-gray-900 underline hover:no-underline dark:text-white">
+        345 Reviews
+      </a>
+      </div>
+    </div>
+
+    <div class="mt-6 flex items-center space-x-4">
+      <div>
+        <label for="quantity" class="block text-sm font-medium text-gray-700 dark:text-gray-400">
+          Quantity
+        </label>
+        <div class="flex mt-1">
+          <button
+            type="button"
+            class="inline-flex items-center px-2 py-1 border border-gray-300 text-sm font-medium rounded-l-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500"
+            onclick="decreaseDetailQuantity()">
+            -
+          </button>
+          <input
+            type="text"
+            id="detailQuantity"
+            name="quantity"
+            value="1"
+            class="text-center w-12 border-t border-b border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm" />
+          <button
+            type="button"
+            class="inline-flex items-center px-2 py-1 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500"
+            onclick="increaseDetailQuantity()">
+            +
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
+      <a
+        href="#"
+        title=""
+        class="text-white mt-4 sm:mt-0 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center justify-center"
+        role="button"
+        onclick="addToCartFromDetail(${product.id})">
+        <svg
+          class="w-5 h-5 -ms-2 me-2"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24">
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6" />
+        </svg>
+        Add to cart
+      </a>
+    </div>
+
+    <hr class="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
+
+    <p class="mb-6 text-gray-500 dark:text-gray-400">
+      ${cleanedDescription}
+    </div>
+  `;
+}
+
+// Add these new functions
+window.decreaseDetailQuantity = function () {
+  let quantityInput = document.getElementById('detailQuantity');
+  let currentQuantity = parseInt(quantityInput.value);
+  if (currentQuantity > 1) {
+    quantityInput.value = currentQuantity - 1;
+  }
+};
+
+window.increaseDetailQuantity = function () {
+  let quantityInput = document.getElementById('detailQuantity');
+  let currentQuantity = parseInt(quantityInput.value);
+  quantityInput.value = currentQuantity + 1;
+};
+
+window.addToCartFromDetail = function (productId) {
+  let quantityInput = document.getElementById('detailQuantity');
+  let quantity = parseInt(quantityInput.value);
+
+  getProductById(productId).then((product) => {
+    if (!product) {
+      console.error('Product not found');
+      return;
+    }
+
+    let existingProduct = cart.find((item) => item.id === productId);
+    if (existingProduct) {
+      existingProduct.quantity += quantity;
+    } else {
+      product.quantity = quantity;
+      cart.push(product);
+    }
+
+    saveCartToLocalStorage();
+    updateCartUI();
+    showPopup('Product added to cart!');
+    updateCartCount();
+  }).catch((error) => {
+    // console.error('Error adding product to cart:', error);
+  });
+};
