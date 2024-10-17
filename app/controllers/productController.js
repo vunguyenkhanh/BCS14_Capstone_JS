@@ -13,7 +13,7 @@ let productList = [];
 
 function formatProductName(productName) {
   if (!productName || typeof productName !== 'string') {
-    return ''; // Return an empty string or some default value
+    return '';
   }
   return productName
     .split(' ')
@@ -305,7 +305,6 @@ function getProductById(productId) {
   if (product) {
     return Promise.resolve(product);
   }
-  // If not found in productList, fetch from API
   return getProductDetail(productId)
     .then((result) => {
       return new ProductModel(
@@ -627,7 +626,6 @@ if (showResultButton) {
     if (selectedCategories.length > 0) {
       getProductByCategory(selectedCategories)
         .then((results) => {
-          // Flatten the array of arrays
           let productList = results.map((result) => result.data.content).flat();
           showPopup('Products filtered successfully!');
           renderProductList(productList);
@@ -819,7 +817,6 @@ function renderProductDetail(product) {
   `;
 }
 
-// Add these new functions
 window.decreaseDetailQuantity = function () {
   let quantityInput = document.getElementById('detailQuantity');
   let currentQuantity = parseInt(quantityInput.value);
