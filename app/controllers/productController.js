@@ -668,6 +668,7 @@ function getProductDetailById() {
     .then((result) => {
       let product = result.data.content;
       renderProductDetail(product);
+      getRelatedProducts(product.relatedProducts);
     })
     .catch((error) => {
       console.log('error', error);
@@ -851,29 +852,98 @@ window.addToCartFromDetail = function (productId) {
   let quantityInput = document.getElementById('detailQuantity');
   let quantity = parseInt(quantityInput.value);
 
-  getProductById(productId).then((product) => {
-    if (!product) {
-      console.error('Product not found');
-      return;
-    }
+  getProductById(productId)
+    .then((product) => {
+      if (!product) {
+        console.error('Product not found');
+        return;
+      }
 
-    let existingProduct = cart.find((item) => item.id === productId);
-    if (existingProduct) {
-      existingProduct.quantity += quantity;
-    } else {
-      product.quantity = quantity;
-      cart.push(product);
-    }
+      let existingProduct = cart.find((item) => item.id === productId);
+      if (existingProduct) {
+        existingProduct.quantity += quantity;
+      } else {
+        product.quantity = quantity;
+        cart.push(product);
+      }
 
-    saveCartToLocalStorage();
-    updateCartUI();
-    showPopup('Product added to cart!');
-    updateCartCount();
-  }).catch((error) => {
-    console.error('Error adding product to cart:', error);
-  });
+      saveCartToLocalStorage();
+      updateCartUI();
+      showPopup('Product added to cart!');
+      updateCartCount();
+    })
+    .catch((error) => {
+      console.error('Error adding product to cart:', error);
+    });
 };
 
 function isUserLoggedIn() {
   return localStorage.getItem('userToken') !== null;
+}
+
+function getRelatedProducts(relatedProductIds) {
+  renderRelatedProducts(relatedProductIds);
+}
+
+function renderRelatedProducts(products) {
+  let relatedProductsElement = document.getElementById('relatedProducts');
+  if (!relatedProductsElement) return;
+
+  let content = products
+    .map(
+      (product) => `
+    <div
+      class="space-y-6 overflow-hidden rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+      <a href="../views/productDetail.html?productid=${
+        product.id
+      }" class="overflow-hidden rounded">
+        <img
+          class="mx-auto h-44 w-44"
+          src="${product.image}"
+          alt="${product.name}"
+      </a>
+      <div>
+        <a
+          href="#"
+          class="text-lg font-semibold leading-tight text-gray-900 hover:underline">
+          ${formatProductName(product.name)}
+        </a>
+        <p class="mt-2 text-base font-normal text-gray-500">
+          ${product.shortDescription}
+        </p>
+      </div>
+      <div>
+        <p class="text-lg font-bold text-gray-900">
+          $${product.price}
+        </p>
+      </div>
+      <div class="mt-6 flex items-center gap-2.5">
+        <button
+          type="button"
+          class="inline-flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300"
+          onclick="addToCartFromDetail(${product.id})">
+          <svg
+            class="-ms-2 me-2 h-5 w-5"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24">
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7h-1M8 7h-.688M13 5v4m-2-2h4" />
+          </svg>
+          Add to cart
+        </button>
+      </div>
+    </div>
+  `,
+    )
+    .join('');
+
+  relatedProductsElement.innerHTML = content;
 }
