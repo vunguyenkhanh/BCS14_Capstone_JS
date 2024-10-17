@@ -111,7 +111,7 @@
                   </svg>
                   <span
                     id="cartCount"
-                    class="absolute -top-1 -right-0 inline-flex items-center justify-center w-3.5 h-3.5 text-[0.625rem] font-bold leading-none text-white bg-red-600 rounded-full"></span>
+                    class="absolute -top-1 -right-0 inline-flex items-center justify-center w-3.5 h-3.5 text-[0.625rem] font-bold leading-none text-white bg-red-600 rounded-full">0</span>
                 </div>
                 <span class="hidden sm:flex">My Cart</span>
                 <svg
@@ -133,12 +133,35 @@
               <div
                 id="myCartDropdown1"
                 class="hidden z-10 mx-auto max-w-lg space-y-4 overflow-hidden rounded-lg bg-white p-6 antialiased shadow-lg">
-                <div id="myCart" class="max-h-96 overflow-y-auto"></div>
+                <div id="myCart" class="max-h-96 overflow-y-auto">
+                                    <div class="flex flex-col items-center justify-center p-4">
+                    <svg
+                      class="h-16 w-16 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M3 3h18M9 3v18m6-18v18M4 21h16M4 7h16M4 11h16M4 15h16"></path>
+                    </svg>
+                    <p class="mt-4 text-lg font-semibold text-gray-500">
+                      Your cart is empty
+                    </p>
+                    <a
+                      href="#products"
+                      class="mt-2 text-primary-600 hover:underline">
+                      Continue Shopping
+                    </a>
+                  </div>
+                </div>
                 <a
                   id="viewCartButton"
                   href="./cart.html"
                   title=""
-                  class="mb-2 me-2 inline-flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300"
+                  class="hidden mb-2 me-2 inline-flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300"
                   role="button">
                   View My Cart
                 </a>
@@ -425,7 +448,7 @@
         <div class="hidden xl:mt-8 xl:block">
           <h3 class="text-2xl font-semibold text-gray-900">Related products</h3>
           <div id="relatedProducts" class="mt-6 grid grid-cols-3 gap-4 sm:mt-8">
-            
+
           </div>
         </div>
       </div>
