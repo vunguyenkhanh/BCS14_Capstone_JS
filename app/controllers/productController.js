@@ -677,7 +677,6 @@ function getProductDetailById() {
 
 function renderProductDetail(product) {
   let productDetailElement = document.getElementById('productDetail');
-  let cleanedDescription = product.description.replace(/about this shoe:/i, '');
 
   if (!productDetailElement) {
     console.error('Product detail element not found');
@@ -821,7 +820,7 @@ function renderProductDetail(product) {
     <hr class="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
 
     <p class="mb-6 text-gray-500 dark:text-gray-400">
-      ${cleanedDescription}
+      ${product.description.replace(/about this shoe:/i, '')}
     </div>
   `;
 }
@@ -909,7 +908,7 @@ function renderRelatedProducts(products) {
           ${formatProductName(product.name)}
         </a>
         <p class="mt-2 text-base font-normal text-gray-500">
-          ${product.shortDescription}
+          ${product.shortDescription.replace(/about this shoe:/i, '')}
         </p>
       </div>
       <div>
