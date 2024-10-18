@@ -921,7 +921,7 @@ function renderRelatedProducts(products) {
         <button
           type="button"
           class="inline-flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300"
-          onclick="addToCartFromDetail(${product.id})">
+          onclick="addToCart(${product.id})">
           <svg
             class="-ms-2 me-2 h-5 w-5"
             aria-hidden="true"
