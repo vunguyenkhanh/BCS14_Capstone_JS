@@ -569,14 +569,15 @@ function loadCartFromLocalStorage() {
 window.decreaseQuantity = function (productId) {
   let product = cart.find((item) => item.id === productId);
   if (product) {
-    product.quantity--;
-    if (product.quantity <= 0) {
-      cart = cart.filter((item) => item.id !== productId);
+    if (product.quantity > 1) {
+      product.quantity--;
+      saveCartToLocalStorage();
+      updateCartUI();
+      updateCartDetailUI();
+      updateCartCount();
+    } else {
+      showPopup('Minimum quantity is 1');
     }
-    saveCartToLocalStorage();
-    updateCartUI();
-    updateCartDetailUI();
-    updateCartCount();
   }
 };
 
@@ -827,7 +828,7 @@ function renderProductDetail(product) {
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="2"
-            d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6" />
+            d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7h-1M8 7h-.688M13 5v4m-2-2h4" />
         </svg>
         Add to cart
       </a>
