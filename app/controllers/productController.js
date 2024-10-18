@@ -348,6 +348,22 @@ function updateCartUI() {
   let cartElement = document.getElementById('myCart');
   let viewCartButton = document.getElementById('viewCartButton');
 
+  if (!isUserLoggedIn()) {
+    cartElement.innerHTML = `
+      <div class="flex flex-col items-center justify-center p-4">
+        <svg class="h-16 w-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h18M9 3v18m6-18v18M4 21h16M4 7h16M4 11h16M4 15h16"></path>
+        </svg>
+        <p class="mt-4 text-lg font-semibold text-gray-500">Please log in to view your cart</p>
+        <a href="./login.html" class="mt-2 text-primary-600 hover:underline">Log In</a>
+      </div>
+    `;
+    viewCartButton.style.display = 'none';
+    return;
+  } else {
+    viewCartButton.style.display = 'inline-flex';
+  }
+
   if (cart.length === 0) {
     cartElement.innerHTML = `
       <div class="flex flex-col items-center justify-center p-4">
