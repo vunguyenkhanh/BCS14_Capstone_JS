@@ -77,7 +77,7 @@ function renderProductList(productList) {
               </div>
 
               <a href="#" class="text-lg font-semibold leading-tight text-gray-900 hover:underline">${formatProductName(
-                product.name,
+                product.name
               )}</a>
 
               <div class="mt-2 flex items-center gap-2">
@@ -173,9 +173,7 @@ function renderProductList(productList) {
               </ul>
 
               <div class="mt-4 flex items-center justify-between gap-4">
-                <p class="text-2xl font-extrabold leading-tight text-gray-900">$${
-                  product.price
-                }</p>
+                <p class="text-2xl font-extrabold leading-tight text-gray-900">$${product.price}</p>
 
                 <button
                   type="button"
@@ -194,7 +192,7 @@ function renderProductList(productList) {
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       stroke-width="2"
-                      d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6" />
+                      d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7h-1M8 7h-.688M13 5v4m-2-2h4" />
                   </svg>
                   Add to cart
                 </button>
@@ -230,8 +228,8 @@ function getProductList() {
             product.categories,
             product.relatedProducts,
             product.feature,
-            product.image,
-          ),
+            product.image
+          )
       );
       // console.log('Product List:', productList);
       renderProductList(result.data.content);
@@ -277,6 +275,7 @@ window.addToCart = function (productId) {
 
     saveCartToLocalStorage();
     updateCartUI();
+    updateTotalPrice();
     showPopup('Product added to cart!');
     updateCartCount();
   });
@@ -327,7 +326,7 @@ function getProductById(productId) {
         result.data.content.categories,
         result.data.content.relatedProducts,
         result.data.content.feature,
-        result.data.content.image,
+        result.data.content.image
       );
     })
     .catch((error) => {
@@ -340,7 +339,7 @@ function saveCartToLocalStorage() {
   localStorage.setItem('cart', JSON.stringify(cart));
   localStorage.setItem(
     'cartCount',
-    cart.reduce((total, item) => total + item.quantity, 0),
+    cart.reduce((total, item) => total + item.quantity, 0)
   );
 }
 
@@ -425,9 +424,20 @@ function updateCartUI() {
         </button>
       </div>
     </div>
-  `,
+  `
     )
     .join('');
+  updateTotalPrice();
+}
+
+function updateTotalPrice() {
+  const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  const formattedPrice = `$${totalPrice.toFixed(2)}`;
+
+  const totalPriceElement = document.getElementById('totalPrice');
+  if (totalPriceElement) {
+    totalPriceElement.textContent = formattedPrice;
+  }
 }
 
 function updateCartDetailUI() {
@@ -452,9 +462,7 @@ function updateCartDetailUI() {
               <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm md:p-6">
                 <div class="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
                   <a href="#" class="shrink-0 md:order-1">
-                    <img class="h-20 w-20" src="${item.image}" alt="${
-            item.name
-          }" />
+                    <img class="h-20 w-20" src="${item.image}" alt="${item.name}" />
                   </a>
 
                   <label for="counter-input" class="sr-only">Choose quantity:</label>
@@ -547,7 +555,7 @@ function updateCartDetailUI() {
                   </div>
                 </div>
               </div>
-  `,
+  `
         )
         .join('');
     }
@@ -574,6 +582,7 @@ window.decreaseQuantity = function (productId) {
       saveCartToLocalStorage();
       updateCartUI();
       updateCartDetailUI();
+      updateTotalPrice();
       updateCartCount();
     } else {
       showPopup('Minimum quantity is 1');
@@ -588,6 +597,7 @@ window.increaseQuantity = function (productId) {
     saveCartToLocalStorage();
     updateCartUI();
     updateCartDetailUI();
+    updateTotalPrice();
     updateCartCount();
   }
 };
@@ -597,6 +607,7 @@ window.removeFromCart = function (productId) {
   saveCartToLocalStorage();
   updateCartUI();
   updateCartDetailUI();
+  updateTotalPrice();
   updateCartCount();
 };
 
@@ -616,13 +627,11 @@ function getCategoryList() {
               value="${cat.id}"
               class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500" />
 
-            <label for="${
-              cat.id
-            }" class="ml-2 text-sm font-medium text-gray-900">${
+            <label for="${cat.id}" class="ml-2 text-sm font-medium text-gray-900">${
               cat.category
             } (${JSON.parse(cat.productList).length})</label>
           </div>
-        `,
+        `
           )
           .join('');
         categoryElement.innerHTML = content;
@@ -636,9 +645,7 @@ function getCategoryList() {
 }
 
 function getSelectedCategories() {
-  let checkboxes = document.querySelectorAll(
-    '#brand input[type="checkbox"]:checked',
-  );
+  let checkboxes = document.querySelectorAll('#brand input[type="checkbox"]:checked');
   return Array.from(checkboxes).map((checkbox) => checkbox.value);
 }
 
@@ -828,7 +835,7 @@ function renderProductDetail(product) {
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="2"
-            d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7h-1M8 7h-.688M13 5v4m-2-2h4" />
+            d="M4 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7h-1M8 7h-.688M13 5v4m-2-2h4" />
         </svg>
         Add to cart
       </a>
@@ -847,6 +854,8 @@ window.decreaseDetailQuantity = function () {
   let currentQuantity = parseInt(quantityInput.value);
   if (currentQuantity > 1) {
     quantityInput.value = currentQuantity - 1;
+  } else {
+    showPopup('Minimum quantity is 1');
   }
 };
 
@@ -910,9 +919,7 @@ function renderRelatedProducts(products) {
       (product) => `
     <div
       class="space-y-6 overflow-hidden rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-      <a href="../views/productDetail.html?productid=${
-        product.id
-      }" class="overflow-hidden rounded">
+      <a href="../views/productDetail.html?productid=${product.id}" class="overflow-hidden rounded">
         <img
           class="mx-auto h-44 w-44"
           src="${product.image}"
@@ -957,7 +964,7 @@ function renderRelatedProducts(products) {
         </button>
       </div>
     </div>
-  `,
+  `
     )
     .join('');
 

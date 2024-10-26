@@ -324,30 +324,9 @@
 
               <div class="space-y-4">
                 <div class="space-y-2">
-                  <dl class="flex items-center justify-between gap-4">
-                    <dt class="text-base font-normal text-gray-500">Original price</dt>
-                    <dd class="text-base font-medium text-gray-900">$7,592.00</dd>
-                  </dl>
-
-                  <dl class="flex items-center justify-between gap-4">
-                    <dt class="text-base font-normal text-gray-500">Savings</dt>
-                    <dd class="text-base font-medium text-green-600">-$299.00</dd>
-                  </dl>
-
-                  <dl class="flex items-center justify-between gap-4">
-                    <dt class="text-base font-normal text-gray-500">Store Pickup</dt>
-                    <dd class="text-base font-medium text-gray-900">$99</dd>
-                  </dl>
-
-                  <dl class="flex items-center justify-between gap-4">
-                    <dt class="text-base font-normal text-gray-500">Tax</dt>
-                    <dd class="text-base font-medium text-gray-900">$799</dd>
-                  </dl>
-                </div>
-
                 <dl class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2">
-                  <dt class="text-base font-bold text-gray-900">Total</dt>
-                  <dd class="text-base font-bold text-gray-900">$8,191.00</dd>
+                  <dt class="text-base font-normal text-gray-500">Total</dt>
+                  <dd id="totalPrice" class="text-base font-medium text-green-600">$0</dd>
                 </dl>
               </div>
 
@@ -484,11 +463,9 @@
     </footer>
 
     <div
-      id="cartPopup"
+      id="myPopup"
       class="hidden fixed bottom-4 right-4 bg-primary-500 text-white p-4 rounded-lg shadow-lg z-50"
-    >
-      Product added to cart!
-    </div>
+    ></div>
 
     <!--Taiwind JS -->
     <script src="../../assets/js/tailwind.js"></script>
