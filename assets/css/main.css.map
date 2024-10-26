@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAQ,+KAAuK;ACA/K;IACK;EACH,WAAW,ECDD,mBAAmB;;ADI/B;;;;;EAKG;EACD,WAAW,ECTE,wBAAwB",
+"sources": ["../sass/Vendors/_fonts.scss","../sass/Base/_reset.scss","../sass/Abstracts/_variables.scss"],
+"names": [],
+"file": "main.css"
+}
